@@ -1,0 +1,55 @@
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background: #f4f4f4;
+  padding: 24px;
+}
+
+.page-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #1e1e2e;
+}
+
+.module-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.module-tabs button {
+  padding: 8px 20px;
+  border: 1px solid #d0d0d0;
+  border-radius: 6px;
+  background: white;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.module-tabs button.active {
+  background: #0f62fe;
+  color: white;
+  border-color: #0f62fe;
+}
+
+.table-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.error-msg {
+  color: #e24c4c;
+  font-size: 11px;
+  display: block;
+  margin-top: 2px;
+}
+
+.field-input {
+  width: 100%;
+  max-width: 160px;
+}

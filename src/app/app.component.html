@@ -1,0 +1,11 @@
+<div class="page-title">Dynamic Reusable Table</div>
+
+<div class="module-tabs">
+  @for (cfg of configs; track cfg.module; let i = $index) {
+    <button [class.active]="activeIndex === i" (click)="switchModule(i)">
+      {{ cfg.module | titlecase }}
+    </button>
+  }
+</div>
+
+<app-dynamic-table [config]="activeConfig" />

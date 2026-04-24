@@ -1,0 +1,112 @@
+<p-toast />
+
+<div class="table-toolbar">
+  <span>Module: <strong>{{ config?.module }}</strong></span>
+  <p-button
+    [label]="editMode ? 'View Mode' : 'Edit Mode'"
+    [severity]="editMode ? 'secondary' : 'primary'"
+    (onClick)="toggleEditMode()"
+  />
+</div>
+
+<form [formGroup]="form">
+  <p-table
+    [value]="rows.controls"
+    [loading]="loading"
+    [paginator]="true"
+    [rows]="5"
+    [rowsPerPageOptions]="[5, 10, 20]"
+    sortMode="multiple"
+    styleClass="p-datatable-striped p-datatable-sm"
+  >
+
+    <ng-template pTemplate="header">
+      <tr>
+        @for (col of config.columns; track col.key) {
+          <th [pSortableColumn]="col.key">
+            {{ col.label }}
+            <p-sortIcon [field]="col.key" />
+          </th>
+        }
+        @if (editMode) {
+          <th>Action</th>
+        }
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-i="rowIndex">
+      <tr [formGroup]="getRowGroup(i)">
+
+        @for (col of config.columns; track col.key) {
+          <td>
+            @if (!editMode) {
+              {{ getRowGroup(i).get(col.key)?.value }}
+            } @else {
+              @switch (col.type) {
+                @case ('text') {
+                  <input
+                    pInputText
+                    type="text"
+                    [formControlName]="col.key"
+                    class="field-input"
+                  />
+                }
+                @case ('number') {
+                  <input
+                    pInputText
+                    type="number"
+                    [formControlName]="col.key"
+                    class="field-input"
+                  />
+                }
+                @case ('date') {
+                  <input
+                    pInputText
+                    type="date"
+                    [formControlName]="col.key"
+                    class="field-input"
+                  />
+                }
+                @case ('dropdown') {
+                  <p-select
+                    [options]="col.options ?? []"
+                    [formControlName]="col.key"
+                    placeholder="Select"
+                  />
+                }
+              }
+              @if (isInvalid(i, col.key)) {
+                <small class="error-msg">Required</small>
+              }
+            }
+          </td>
+        }
+
+        @if (editMode) {
+          <td>
+            <p-button
+              label="Save"
+              severity="success"
+              size="small"
+              [loading]="savingIndex === i"
+              (onClick)="save(i)"
+            />
+          </td>
+        }
+
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td
+          [attr.colspan]="config.columns.length + (editMode ? 1 : 0)"
+          style="text-align:center; padding: 24px"
+        >
+          No records found.
+        </td>
+      </tr>
+    </ng-template>
+
+  </p-table>
+</form>
